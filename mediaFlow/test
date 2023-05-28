@@ -1,0 +1,18 @@
+#!/bin/bash
+
+
+function goIn()
+{
+    cd $1
+}
+
+echo "$(pwd)"
+goIn "HouseWarming"
+echo "$(pwd)"
+
+
+
+name="Daniya"
+if [[ "$name" == "Daniya" ]] && [[ "$name" == "Zach" ]]; then
+    echo "This will run if $name is Daniya OR Zach."
+fi

@@ -1,0 +1,83 @@
+#!/bin/bash
+
+
+# parallel processing subshells and bg processes
+
+# size of sample size and pool size in GB
+# keep sample size `size of largest file` less than actual size !!!!!
+SAMPLE_SIZE=12
+POOL_SIZE=39
+
+# sampling rate
+samplingRate=$(( "$POOL_SIZE"/"$SAMPLE_SIZE" ))
+echo "$samplingRate"
+
+# everytime MB crosses 10^9 GB is incremented by 1; to optimise for 32 bit integers on old pcs,single boards
+cur_sampleSizeGB=0
+cur_sampleSizeB=0
+
+
+# recursively sampling photos
+function discPhotos()
+{
+    #echo
+    #echo
+    #echo
+    #echo
+    #echo "now in $(pwd)"
+    #dirContents=$(ls)
+    for i in *
+    do
+        if [ -d "$i" ] # checking if its a directory
+        then
+            if [[ "$i" != "sampleDir" ]]
+            then
+                echo "$i is a directory"
+                cd "$i"
+                discPhotos "$1"
+                cd ..
+            fi
+        else # its a file
+            explore=$(( $RANDOM % $samplingRate ))
+            if [[ "$explore" -eq 1 && "$i" != "mediaFlow" ]] # sampling based on probability of selecting 1
+            then
+                if [[ "$i" =~ (.heic|.HEIC|.jpg|.JPG|.jpeg|.JPEG|.mp4|.MP4|.png|.PNG|.hevc|.HEVC|.mov|.MOV)$ ]]
+                then
+                    echo "$i is a file"
+                    cp "$i" "$1/sampleDir"
+
+                    # calculating size of currently sampled photos
+                    cur_sampleSizeB=$(( $cur_sampleSizeB + $(stat -c %s "$i") ))
+                    if [[ cur_sampleSizeB -ge 10**9 ]]
+                    then
+                        cur_sampleSizeB=0
+                        cur_sampleSizeGB=$(( $cur_sampleSizeGB +1 ))
+                    fi
+                    if [[ $cur_sampleSizeGB -eq $SAMPLE_SIZE ]]
+                    then
+                        break
+                    fi
+                fi
+            fi
+        fi
+    done
+
+}
+
+
+# running the function
+
+
+rm -r sampleDir
+mkdir -p sampleDir
+
+if [[ $samplingRate -le 1 ]]
+then
+    cp -r $( ls | grep -v -E "(mediaFlow|sampleDir)" ) sampleDir/ # only allow selected file formats, not really necessary
+else
+    curDir=$(pwd)
+    discPhotos "$curDir"
+fi
+
+echo $cur_sampleSizeB
+echo $cur_sampleSizeGB
