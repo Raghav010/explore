@@ -5,8 +5,8 @@
 
 # size of sample size and pool size in GB
 # keep sample size `size of largest file` less than actual size !!!!!
-SAMPLE_SIZE=12
-POOL_SIZE=39
+SAMPLE_SIZE="$1"
+POOL_SIZE="$2"
 
 # sampling rate
 samplingRate=$(( "$POOL_SIZE"/"$SAMPLE_SIZE" ))
@@ -25,8 +25,9 @@ function discPhotos()
     #echo
     #echo
     #echo "now in $(pwd)"
-    #dirContents=$(ls)
-    for i in *
+    dirContents=$(ls|shuf) # randomizing order of drectories
+    dirContents=("$dirContents") # this is to prevent splitting directory names with spaces, when looping
+    for i in "${dirContents[@]}" 
     do
         if [ -d "$i" ] # checking if its a directory
         then
@@ -48,10 +49,12 @@ function discPhotos()
 
                     # calculating size of currently sampled photos
                     cur_sampleSizeB=$(( $cur_sampleSizeB + $(stat -c %s "$i") ))
-                    if [[ cur_sampleSizeB -ge 10**9 ]]
+                    if [[ $cur_sampleSizeB -ge 10**9 ]] # not exactly 1gb - actually 1,073,741,824 bytes
                     then
-                        cur_sampleSizeB=0
-                        cur_sampleSizeGB=$(( $cur_sampleSizeGB +1 ))
+                        add_GB=$(( $cur_sampleSizeB / 10**9 ))
+                        cur_sampleSizeGB=$(( $cur_sampleSizeGB + $add_GB ))
+                        # cur_sampleSizeB=0
+                        cur_sampleSizeB=$(( $cur_sampleSizeB - $add_GB * 10**9 )) # more accurate
                     fi
                     if [[ $cur_sampleSizeGB -eq $SAMPLE_SIZE ]]
                     then
@@ -66,10 +69,11 @@ function discPhotos()
 
 
 # running the function
+cd "$3"
 
-
-rm -r sampleDir
+rm -r sampleDir || true
 mkdir -p sampleDir
+
 
 if [[ $samplingRate -le 1 ]]
 then
@@ -81,3 +85,8 @@ fi
 
 echo $cur_sampleSizeB
 echo $cur_sampleSizeGB
+
+# moving sampleDir to required location
+# what happens when sampleDir is already at dest?
+rm -r "$4/sampleDir" || true
+mv sampleDir "$4"

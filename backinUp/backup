@@ -1,0 +1,18 @@
+#!/bin/bash
+
+SRC="$1" # new uploads folder
+DEST="$2"
+
+
+cd "$SRC"
+
+for i in *
+do
+    if [ "$i" -d ]
+    then
+        cd "$i"
+        mkdir -p "$DEST/$i"
+        cp * "$DEST/$i"
+        # move files from new uploads to homegallery folder
+    fi
+done
