@@ -1,0 +1,23 @@
+#!/bin/bash
+# this script needs to be executed from this directory only!!
+
+set -e
+
+source .env
+
+
+
+# remove everything from disc
+rm -r "$DISC$DISC_PHOTOS_NAME/*"
+
+
+# run mediaFlow from HOT2 to disc
+./mediaFlow/mediaFlow "$DISC_PHOTOS_SIZE_ALLOC" "$HOT_PHOTOS_SIZE" "$HOT2$HOT_PHOTOS_NAME" "$DISC$DISC_PHOTOS_NAME"
+
+
+
+# update homegallery
+docker-compose run gallery run import --initial
+
+
+# set free space in env

@@ -1,0 +1,34 @@
+#!/bin/bash
+# this script needs to be executed from this directory only!!
+
+set -e
+
+source .env
+
+
+# creates necessary folders in HOT1 and HOT2 and moves data from backup to HOT???
+mkdir -p "$HOT1$HOT_PHOTOS_NAME"
+mkdir -p "$HOT1$HOT_DOWNSTREAM_NAME"
+mkdir -p "$HOT1$HOT_CLOUDSTREAM_NAME"
+mkdir -p "$HOT2$HOT_PHOTOS_NAME"
+mkdir -p "$DISC$DISC_PHOTOS_NAME"
+mkdir -p "$DISC$HG_PHOTOS_NAME"
+
+
+# sets up home gallery
+echo "CURRENT_USER=$(id -u):$(id -g)" >> .env
+docker-compose run gallery run init --source /data/Pictures
+docker-compose up -d
+
+
+# generates cron paths
+
+
+
+# run updateDISC
+./updateDISC
+
+
+
+# caluclates sizes of drives, photos size in DISC and buffer sizes
+./sizeInfo/sizeInfo -d -b -h -ps

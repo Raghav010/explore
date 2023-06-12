@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# this script needs to be executed from this directory only!!
+
+set -e
+
+source .env
+
+
+
+# run backup on downstream of hot to backup drive photos
+./backinUp/backup "$HOT1$HOT_DOWNSTREAM_NAME" "$BACKUP$BACKUP_PHOTOS_NAME"
+
+
+# move downstream of hot to photos of hot using backup
+./backinUp/backup "$HOT1$HOT_DOWNSTREAM_NAME" "$HOT1$HOT_PHOTOS_NAME"
+rm -r "$HOT1$HOT_DOWNSTREAM_NAME/*"
