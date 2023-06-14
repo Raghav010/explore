@@ -13,6 +13,8 @@ mkdir -p "$HOT1$HOT_CLOUDSTREAM_NAME"
 mkdir -p "$HOT2$HOT_PHOTOS_NAME"
 mkdir -p "$DISC$DISC_PHOTOS_NAME"
 mkdir -p "$DISC$HG_PHOTOS_NAME"
+cp -r "$BACKUP$BACKUP_PHOTOS_NAME/*" "$HOT1$HOT_PHOTOS_NAME"
+cp -r "$BACKUP$BACKUP_PHOTOS_NAME/*" "$HOT2$HOT_PHOTOS_NAME"
 
 
 # sets up home gallery
@@ -31,4 +33,4 @@ docker-compose up -d
 
 
 # caluclates sizes of drives, photos size in DISC and buffer sizes
-./sizeInfo/sizeInfo -d -b -h -ps
+./sizeInfo/sizeInfo -d -b -h

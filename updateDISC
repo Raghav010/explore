@@ -12,7 +12,8 @@ rm -r "$DISC$DISC_PHOTOS_NAME/*"
 
 
 # run mediaFlow from HOT2 to disc
-./mediaFlow/mediaFlow "$DISC_PHOTOS_SIZE_ALLOC" "$HOT_PHOTOS_SIZE" "$HOT2$HOT_PHOTOS_NAME" "$DISC$DISC_PHOTOS_NAME"
+a=$(du -s "$HOT2$HOT_PHOTOS_NAME" --block-size=1G | awk '{print $1}')
+./mediaFlow/mediaFlow "$DISC_PHOTOS_SIZE_ALLOC" "$a" "$HOT2$HOT_PHOTOS_NAME" "$DISC$DISC_PHOTOS_NAME"
 
 
 

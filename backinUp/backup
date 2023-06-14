@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 
 SRC="$1" # new uploads folder
 DEST="$2"
