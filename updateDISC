@@ -8,7 +8,7 @@ source .env
 
 
 # remove everything from disc
-rm -r "$DISC$DISC_PHOTOS_NAME/*"
+rm -r "${DISC}${DISC_PHOTOS_NAME}"* || true
 
 
 # run mediaFlow from HOT2 to disc
@@ -18,7 +18,7 @@ a=$(du -s "$HOT2$HOT_PHOTOS_NAME" --block-size=1G | awk '{print $1}')
 
 
 # update homegallery
-docker-compose run gallery run import --initial
+sudo docker compose run gallery run import --initial
 
 
 # set free space in env

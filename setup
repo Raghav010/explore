@@ -7,20 +7,22 @@ source .env
 
 
 # creates necessary folders in HOT1 and HOT2 and moves data from backup to HOT???
+echo "making required directories"
 mkdir -p "$HOT1$HOT_PHOTOS_NAME"
 mkdir -p "$HOT1$HOT_DOWNSTREAM_NAME"
 mkdir -p "$HOT1$HOT_CLOUDSTREAM_NAME"
 mkdir -p "$HOT2$HOT_PHOTOS_NAME"
 mkdir -p "$DISC$DISC_PHOTOS_NAME"
 mkdir -p "$DISC$HG_PHOTOS_NAME"
-cp -r "$BACKUP$BACKUP_PHOTOS_NAME/*" "$HOT1$HOT_PHOTOS_NAME"
-cp -r "$BACKUP$BACKUP_PHOTOS_NAME/*" "$HOT2$HOT_PHOTOS_NAME"
+cp -r "${BACKUP}${BACKUP_PHOTOS_NAME}"* "$HOT1$HOT_PHOTOS_NAME"
+cp -r "${BACKUP}${BACKUP_PHOTOS_NAME}"* "$HOT2$HOT_PHOTOS_NAME"
 
 
 # sets up home gallery
+echo "setting up home gallery"
 echo "CURRENT_USER=$(id -u):$(id -g)" >> .env
-docker-compose run gallery run init --source /data/Pictures
-docker-compose up -d
+sudo docker compose run gallery run init --source /data/Pictures
+sudo docker compose up -d
 
 
 # generates cron paths
@@ -28,9 +30,11 @@ docker-compose up -d
 
 
 # run updateDISC
+echo "updating discovery drive"
 ./updateDISC
 
 
 
 # caluclates sizes of drives, photos size in DISC and buffer sizes
+echo "calculating drive sizes"
 ./sizeInfo/sizeInfo -d -b -h

@@ -84,5 +84,5 @@ echo $cur_sampleSizeGB
 
 # moving sampleDir to required location
 # what happens when sampleDir is already at dest?
-rm -r "$4/sampleDir" || true
+rm -r "${4}sampleDir" || true
 mv sampleDir "$4"

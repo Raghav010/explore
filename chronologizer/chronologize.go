@@ -34,21 +34,21 @@ func main() {
 
 
 			// extracting exif data from files
-			imgFile,err:=os.Open(dirPath+"/"+entry.Name())
+			imgFile,err:=os.Open(dirPath+entry.Name())
 			if err!=nil{
 				log.Fatal(err)
 			}
 			metaData,err:=exif.Decode((imgFile))
 			if err!=nil{
-				os.Mkdir(dirPath+"/unknown",0755)
-				os.Rename(dirPath+"/"+entry.Name(),dirPath+"/unknown/"+entry.Name())
+				os.Mkdir(dirPath+"unknown",0755)
+				os.Rename(dirPath+entry.Name(),dirPath+"unknown/"+entry.Name())
 				fmt.Println("cant decode exif data")
 				continue
 			}
 			jsonBytes,err:=metaData.MarshalJSON()
 			if err!=nil{
-				os.Mkdir(dirPath+"/unknown",0755)
-				os.Rename(dirPath+"/"+entry.Name(),dirPath+"/unknown/"+entry.Name())
+				os.Mkdir(dirPath+"unknown",0755)
+				os.Rename(dirPath+entry.Name(),dirPath+"unknown/"+entry.Name())
 				fmt.Println("cant decode exif data")
 				continue
 			}
@@ -59,24 +59,24 @@ func main() {
 			// date un-formatted
 			dateUnF:=strings.Split(gjson.Get(jsonString, "DateTime").String(), " ")[0]
 			if dateUnF==""{
-				os.Mkdir(dirPath+"/unknown",0755)
-				os.Rename(dirPath+"/"+entry.Name(),dirPath+"/unknown/"+entry.Name())
+				os.Mkdir(dirPath+"unknown",0755)
+				os.Rename(dirPath+entry.Name(),dirPath+"unknown/"+entry.Name())
 				fmt.Println("no date present")
 				continue
 			}
 
 			dateSplit:=strings.Split(dateUnF,":")
 			if len(dateSplit) <2{
-				os.Mkdir(dirPath+"/unknown",0755)
-				os.Rename(dirPath+"/"+entry.Name(),dirPath+"/unknown/"+entry.Name())
+				os.Mkdir(dirPath+"unknown",0755)
+				os.Rename(dirPath+entry.Name(),dirPath+"unknown/"+entry.Name())
 				fmt.Println("no date present")
 				continue
 			}
 
 			date:=strings.Join(dateSplit[:2],"-")
 			fmt.Println("dated:"+date)
-			os.Mkdir(dirPath+"/"+date,0755)
-			os.Rename(dirPath+"/"+entry.Name(),dirPath+"/"+date+"/"+entry.Name())
+			os.Mkdir(dirPath+date,0755)
+			os.Rename(dirPath+entry.Name(),dirPath+date+"/"+entry.Name())
 
 		}
 	}

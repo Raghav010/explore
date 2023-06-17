@@ -14,4 +14,4 @@ source .env
 
 # move downstream of hot to photos of hot using backup
 ./backinUp/backup "$HOT1$HOT_DOWNSTREAM_NAME" "$HOT1$HOT_PHOTOS_NAME"
-rm -r "$HOT1$HOT_DOWNSTREAM_NAME/*"
+rm -r "${HOT1}${HOT_DOWNSTREAM_NAME}"*

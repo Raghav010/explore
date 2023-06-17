@@ -10,11 +10,12 @@ cd "$SRC"
 
 for i in *
 do
-    if [ "$i" -d ]
+    if [ -d "$i" ]
     then
         cd "$i"
-        mkdir -p "$DEST/$i"
-        cp * "$DEST/$i"
+        mkdir -p "$DEST$i"
+        cp * "$DEST$i"
+        cd ..
         # move files from new uploads to homegallery folder
     fi
 done
