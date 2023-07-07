@@ -6,7 +6,7 @@ set -e
 
 source .env
 
-
+# mount backup drives
 
 # run backup on downstream of hot to backup drive photos
 ./backinUp/backup "$HOT1$HOT_DOWNSTREAM_NAME" "$BACKUP$BACKUP_PHOTOS_NAME"
@@ -15,3 +15,6 @@ source .env
 # move downstream of hot to photos of hot using backup
 ./backinUp/backup "$HOT1$HOT_DOWNSTREAM_NAME" "$HOT1$HOT_PHOTOS_NAME"
 rm -r "${HOT1}${HOT_DOWNSTREAM_NAME}"*
+
+
+# unmount backup drives

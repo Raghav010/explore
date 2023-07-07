@@ -17,25 +17,40 @@ echo "chronologizing..."
 echo "populating to other hot drives"
 ./backinUp/backup "$HOT1$HOT_CLOUDSTREAM_NAME" "$HOT2$HOT_PHOTOS_NAME"
 
+
 # copy these to disc photos using backup
-echo "copying to discovery drive"
-./backinUp/backup "$HOT1$HOT_CLOUDSTREAM_NAME" "${DISC}${DISC_PHOTOS_NAME}sampleDir/"
+if [[ "$DISC_STOP" -eq 0 ]]
+then
+    echo "copying to discovery drive"
+    ./backinUp/backup "$HOT1$HOT_CLOUDSTREAM_NAME" "${DISC}${DISC_PHOTOS_NAME}sampleDir/"
+fi
 
 # move these to curr hot drive downstream using backup
 ./backinUp/backup "$HOT1$HOT_CLOUDSTREAM_NAME" "$HOT1$HOT_DOWNSTREAM_NAME"
 rm -r "${HOT1}${HOT_CLOUDSTREAM_NAME}"*
 
 
-# update home gallery import initial
-sudo docker compose run -T gallery run import --update
+if [[ "$DISC_STOP" -eq 0 ]]
+then
+    # update home gallery import initial
+    sudo docker compose run -T gallery run import --update
+fi
 
 
-# delete these photos from disc drive
-
-
-# check for space and buffer in hot and disc, set envs
 
 
 # delete from dropbox using rclone
 echo "deleting from dropbox"
 rclone delete "$REMOTENAME:$REMOTE_FOLDER"
+
+
+
+# check for space and buffer in hot and disc, set envs
+freeDISC=$(df --block-size=1G "${DISC}" --output=avail | tail -1 | awk '{print $1}')
+if [[ "$freeDISC" -le "$BUFFER_DISC" ]]
+then
+    cat .env | grep -v "DISC_STOP" > .env
+    echo "DISC_STOP=1" >> .env
+fi
+
+

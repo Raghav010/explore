@@ -1,7 +1,8 @@
 #!/bin/bash
-# this script needs to be executed from this directory only!!
+# this script needs to be executed from this directory only using sudo!!
 
 set -e
+
 
 source .env
 
@@ -29,6 +30,11 @@ sudo docker compose up -d
 
 
 
+# saves old crontab
+mkdir -p cronconf
+sudo crontab -l -u root > ./cronconf/oldcrontab 
+
+
 # run updateDISC
 echo "updating discovery drive"
 ./updateDISC
@@ -36,5 +42,5 @@ echo "updating discovery drive"
 
 
 # caluclates sizes of drives, photos size in DISC and buffer sizes
-echo "calculating drive sizes"
-./sizeInfo/sizeInfo -d -b -h
+#echo "calculating drive sizes"
+#./sizeInfo/sizeInfo -d -b -h

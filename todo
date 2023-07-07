@@ -1,5 +1,15 @@
  - configure home gallery properly
- - figure out error handling and shutdown behaviour
  - do buffering
+ - change chronologizer to third party maybe
  - figure out how to calculate sizes of directories and keep track
  - https://www.cyberciti.biz/faq/linux-unix-copy-a-file-to-multiple-directories-using-cp-command/ copy in parallel between backup and hot
+
+ Priority 
+ - mounting and unmounting of drives
+ - logging
+ - if error occurs notify
+ - shutdown behavior
+
+ High Priority
+ - change home gallery conf to stop watching sources
+ - homegallery docker start on reboot

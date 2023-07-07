@@ -12,6 +12,7 @@ services:
       #- BACKEND=cpu
       - BACKEND=wasm
       #- BACKEND=node
+    restart: always
   gallery:
     # custom build via
     #build: .
@@ -21,6 +22,8 @@ services:
       #- GALLERY_API_SERVER_CONCURRENT=1 # On low powered devices
       #- GALLERY_API_SERVER_TIMEOUT=60 # On low powered devices
       - GALLERY_OPEN_BROWSER=false
+      # Use polling for safety of possible network mounts. Try 0 to use inotify via fs.watch
+      - GALLERY_WATCH_POLL_INTERVAL=300
     volumes:
       - ${DISC}${HG_PHOTOS_NAME}:/data
       # Mount your media directories below /data
@@ -28,5 +31,6 @@ services:
     ports:
       - "3000:3000"
     user: "${CURRENT_USER}"
+    restart: always
     entrypoint: ['node', '/app/gallery.js']
     command: ['run', 'server']
