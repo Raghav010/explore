@@ -6,46 +6,48 @@ set -e
 source .env
 
 # rclone pull to cloudstream
-echo "pulling from dropbox..."
+echo "< $(date +"%D %T") >--------------------------->pulling from dropbox..."
 rclone copy "$REMOTENAME:$REMOTE_FOLDER" "$HOT1$HOT_CLOUDSTREAM_NAME"
 
 # chronologize these
-echo "chronologizing..."
+echo "< $(date +"%D %T") >--------------------------->chronologizing..."
 ./chronologizer/chronologize "$HOT1$HOT_CLOUDSTREAM_NAME"
 
 # copy these to other hot drives photos dir using backup 
-echo "populating to other hot drives"
+echo "< $(date +"%D %T") >--------------------------->populating to other hot drives"
 ./backinUp/backup "$HOT1$HOT_CLOUDSTREAM_NAME" "$HOT2$HOT_PHOTOS_NAME"
 
 
 # copy these to disc photos using backup
 if [[ "$DISC_STOP" -eq 0 ]]
 then
-    echo "copying to discovery drive"
+    echo "< $(date +"%D %T") >--------------------------->copying to discovery drive"
     ./backinUp/backup "$HOT1$HOT_CLOUDSTREAM_NAME" "${DISC}${DISC_PHOTOS_NAME}sampleDir/"
 fi
 
 # move these to curr hot drive downstream using backup
+echo "< $(date +"%D %T") >--------------------------->moving to downstream of current hotdrive"
 ./backinUp/backup "$HOT1$HOT_CLOUDSTREAM_NAME" "$HOT1$HOT_DOWNSTREAM_NAME"
 rm -r "${HOT1}${HOT_CLOUDSTREAM_NAME}"*
 
 
-if [[ "$DISC_STOP" -eq 0 ]]
-then
+#if [[ "$DISC_STOP" -eq 0 ]]
+#then
     # update home gallery import initial
-    sudo docker compose run -T gallery run import --update
-fi
+#    sudo docker compose run -T gallery run import --update
+#fi
 
 
 
 
 # delete from dropbox using rclone
-echo "deleting from dropbox"
+echo "< $(date +"%D %T") >--------------------------->deleting from dropbox"
 rclone delete "$REMOTENAME:$REMOTE_FOLDER"
 
 
 
 # check for space and buffer in hot and disc, set envs
+echo "< $(date +"%D %T") >--------------------------->conducting discovery drive space checks"
 freeDISC=$(df --block-size=1G "${DISC}" --output=avail | tail -1 | awk '{print $1}')
 if [[ "$freeDISC" -le "$BUFFER_DISC" ]]
 then

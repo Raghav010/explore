@@ -6,10 +6,8 @@
 
  Priority 
  - mounting and unmounting of drives
- - logging
  - if error occurs notify
  - shutdown behavior
 
  High Priority
  - change home gallery conf to stop watching sources
- - homegallery docker start on reboot

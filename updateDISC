@@ -8,17 +8,19 @@ source .env
 
 
 # remove everything from disc
+echo "< $(date +"%D %T") >--------------------------->cleaning discovery drive"
 rm -r "${DISC}${DISC_PHOTOS_NAME}"* || true
 
 
 # run mediaFlow from HOT2 to disc
+echo "< $(date +"%D %T") >--------------------------->running mediaflow"
 a=$(du -s "$HOT2$HOT_PHOTOS_NAME" --block-size=1G | awk '{print $1}')
 ./mediaFlow/mediaFlow "$DISC_PHOTOS_SIZE_ALLOC" "$a" "$HOT2$HOT_PHOTOS_NAME" "$DISC$DISC_PHOTOS_NAME"
 
 
 
 # update homegallery
-sudo docker compose run gallery run import --initial
+#sudo docker compose run gallery run import --initial
 
 
 # set free space in env

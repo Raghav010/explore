@@ -9,10 +9,12 @@ source .env
 # mount backup drives
 
 # run backup on downstream of hot to backup drive photos
+echo "< $(date +"%D %T") >--------------------------->backing up photos"
 ./backinUp/backup "$HOT1$HOT_DOWNSTREAM_NAME" "$BACKUP$BACKUP_PHOTOS_NAME"
 
 
 # move downstream of hot to photos of hot using backup
+echo "< $(date +"%D %T") >--------------------------->moving from downstream to normal photos folder of current hot drive"
 ./backinUp/backup "$HOT1$HOT_DOWNSTREAM_NAME" "$HOT1$HOT_PHOTOS_NAME"
 rm -r "${HOT1}${HOT_DOWNSTREAM_NAME}"*
 

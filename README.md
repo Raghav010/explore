@@ -10,4 +10,4 @@
 
 **removing**
 - remove cron jobs
-- stop and remove docker images ( docker down )
+- stop and remove docker images ( docker compose down --remove-orphans )
