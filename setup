@@ -32,7 +32,7 @@ sudo docker compose up -d
 
 # saves old crontab
 mkdir -p cronconf
-sudo crontab -l -u root > ./cronconf/oldcrontab 
+sudo crontab -l -u root > ./cronconf/oldcrontab || true
 
 
 # run updateDISC

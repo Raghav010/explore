@@ -28,7 +28,7 @@ fi
 # move these to curr hot drive downstream using backup
 echo "< $(date +"%D %T") >--------------------------->moving to downstream of current hotdrive"
 ./backinUp/backup "$HOT1$HOT_CLOUDSTREAM_NAME" "$HOT1$HOT_DOWNSTREAM_NAME"
-rm -r "${HOT1}${HOT_CLOUDSTREAM_NAME}"*
+rm -r "${HOT1}${HOT_CLOUDSTREAM_NAME}"* || true
 
 
 #if [[ "$DISC_STOP" -eq 0 ]]

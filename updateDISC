@@ -11,6 +11,18 @@ source .env
 echo "< $(date +"%D %T") >--------------------------->cleaning discovery drive"
 rm -r "${DISC}${DISC_PHOTOS_NAME}"* || true
 
+# removing the homegallary metadata from disc
+echo "< $(date +"%D %T") >--------------------------->cleaning homegallery data"
+rm -f "${DISC}${HG_PHOTOS_NAME}config/database.db" "${DISC}${HG_PHOTOS_NAME}config/gallery.log" "${DISC}${HG_PHOTOS_NAME}config/Pictures.idx"
+rm -rf "${DISC}${HG_PHOTOS_NAME}Pictures/"
+rm -rf "${DISC}${HG_PHOTOS_NAME}storage/"
+
+
+# restarting homegallery
+echo "< $(date +"%D %T") >--------------------------->Restarting home gallery, downtime now"
+sudo docker compose restart
+
+
 
 # run mediaFlow from HOT2 to disc
 echo "< $(date +"%D %T") >--------------------------->running mediaflow"

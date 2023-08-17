@@ -1,6 +1,8 @@
 **setup**
+- python,perl and bash needs to be supported
+- sortphotos needs to be installed in root account
 - the ntfs-3g and fuse package need to be installed
-- setup rclone with dropbox account globally, root should be able to access it
+- setup rclone with dropbox account globally, root should be able to access it( recommended way is to setup rclone **using** the root account )
 - connect drives
 - Fill in drive paths in the .env file
 - run setup with sudo permissions

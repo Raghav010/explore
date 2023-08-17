@@ -1,6 +1,5 @@
  - configure home gallery properly
  - do buffering
- - change chronologizer to third party maybe
  - figure out how to calculate sizes of directories and keep track
  - https://www.cyberciti.biz/faq/linux-unix-copy-a-file-to-multiple-directories-using-cp-command/ copy in parallel between backup and hot
 
@@ -11,3 +10,4 @@
 
  High Priority
  - change home gallery conf to stop watching sources
+ - change chronologizer to third party maybe

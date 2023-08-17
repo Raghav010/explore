@@ -29,37 +29,38 @@ function discPhotos()
     #echo "now in $(pwd)"
     for i in * 
     do
+        if [ -d "$i" ] # checking if its a directory
+        then
+            echo "$i is a directory"
+            cd "$i"
+            discPhotos "$1"
+            cd ..
+        else # its a file
             explore=$(( $RANDOM % $samplingRate ))
             if [[ "$explore" -eq 1 && "$i" != "mediaFlow" && "$i" != "sampleDir" ]] # sampling based on probability of selecting 1
             then
-                if [ -d "$i" ] # checking if its a directory
+                if [[ "$i" =~ (.heic|.HEIC|.jpg|.JPG|.jpeg|.JPEG|.mp4|.MP4|.png|.PNG|.hevc|.HEVC|.mov|.MOV)$ ]]
                 then
-                    echo "$i is a directory"
-                    cd "$i"
-                    discPhotos "$1"
-                    cd ..
-                else # its a file
-                    if [[ "$i" =~ (.heic|.HEIC|.jpg|.JPG|.jpeg|.JPEG|.mp4|.MP4|.png|.PNG|.hevc|.HEVC|.mov|.MOV)$ ]]
-                    then
-                        echo "$i is a file"
-                        cp "$i" "$1/sampleDir"
+                    echo "$i is a file"
+                    cp "$i" "$1/sampleDir"
 
-                        # calculating size of currently sampled photos
-                        cur_sampleSizeB=$(( $cur_sampleSizeB + $(stat -c %s "$i") ))
-                        if [[ $cur_sampleSizeB -ge 10**9 ]] # not exactly 1gb - actually 1,073,741,824 bytes
-                        then
-                            add_GB=$(( $cur_sampleSizeB / 10**9 ))
-                            cur_sampleSizeGB=$(( $cur_sampleSizeGB + $add_GB ))
-                            # cur_sampleSizeB=0
-                            cur_sampleSizeB=$(( $cur_sampleSizeB - $add_GB * 10**9 )) # more accurate
-                        fi
-                        if [[ $cur_sampleSizeGB -eq $SAMPLE_SIZE ]]
-                        then
-                            break
-                        fi
+                    # calculating size of currently sampled photos
+                    cur_sampleSizeB=$(( $cur_sampleSizeB + $(stat -c %s "$i") ))
+                    if [[ $cur_sampleSizeB -ge 10**9 ]] # not exactly 1gb - actually 1,073,741,824 bytes
+                    then
+                        add_GB=$(( $cur_sampleSizeB / 10**9 ))
+                        cur_sampleSizeGB=$(( $cur_sampleSizeGB + $add_GB ))
+                        # cur_sampleSizeB=0
+                        cur_sampleSizeB=$(( $cur_sampleSizeB - $add_GB * 10**9 )) # more accurate
+                    fi
+                    if [[ $cur_sampleSizeGB -eq $SAMPLE_SIZE ]]
+                    then
+                        break
                     fi
                 fi
             fi
+        fi
+
     done
 
 }
@@ -71,7 +72,7 @@ cd "$3"
 rm -r sampleDir || true
 mkdir -p sampleDir
 
-
+# try not piping ls here
 if [[ $samplingRate -le 1 ]]
 then
     cp -r $( ls | grep -v -E "(mediaFlow|sampleDir)" ) sampleDir/ # only allow selected file formats, not really necessary
