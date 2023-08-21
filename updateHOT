@@ -5,13 +5,20 @@ set -e
 
 source .env
 
+
+# make temp dir where dropbox photos will be pulled to
+mkdir -p "${HOT1}temp"
+
 # rclone pull to cloudstream
 echo "< $(date +"%D %T") >--------------------------->pulling from dropbox..."
-rclone copy "$REMOTENAME:$REMOTE_FOLDER" "$HOT1$HOT_CLOUDSTREAM_NAME"
+rclone copy "$REMOTENAME:$REMOTE_FOLDER" "${HOT1}temp"
 
 # chronologize these
 echo "< $(date +"%D %T") >--------------------------->chronologizing..."
-./chronologizer/chronologize "$HOT1$HOT_CLOUDSTREAM_NAME"
+cd chronologizer/src
+python3 sortphotos.py -s -r --sort %Y%m "${HOT1}temp" "$HOT1$HOT_CLOUDSTREAM_NAME"
+cd ../../
+rm -rf "${HOT1}temp"
 
 # copy these to other hot drives photos dir using backup 
 echo "< $(date +"%D %T") >--------------------------->populating to other hot drives"
