@@ -1,0 +1,44 @@
+#!/bin/bash
+# this script needs to be executed from this directory only using sudo!!
+
+set -e
+
+
+source .env
+
+
+# creates necessary folders in HOT1 and HOT2 and moves data from backup to HOT???
+echo "making required directories"
+mkdir -p "$HOT1$HOT_PHOTOS_NAME"
+mkdir -p "$HOT1$HOT_DOWNSTREAM_NAME"
+mkdir -p "$HOT1$HOT_CLOUDSTREAM_NAME"
+mkdir -p "$HOT2$HOT_PHOTOS_NAME"
+mkdir -p "$DISC$DISC_PHOTOS_NAME"
+mkdir -p "$DISC$HG_PHOTOS_NAME"
+
+
+# sets up home gallery
+echo "setting up home gallery"
+echo "CURRENT_USER=$(id -u):$(id -g)" >> .env
+sudo docker compose run gallery run init --source /data/Pictures
+sudo docker compose up -d
+
+
+# generates cron paths
+
+
+
+# saves old crontab
+mkdir -p cronconf
+sudo crontab -l -u root > ./cronconf/oldcrontab || true
+
+
+# run updateDISC
+echo "updating discovery drive"
+./updateDISC
+
+
+
+# caluclates sizes of drives, photos size in DISC and buffer sizes
+#echo "calculating drive sizes"
+#./sizeInfo/sizeInfo -d -b -h

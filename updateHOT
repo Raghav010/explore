@@ -6,6 +6,7 @@ set -e
 source .env
 
 
+
 # make temp dir where dropbox photos will be pulled to
 mkdir -p "${HOT1}temp"
 
@@ -16,7 +17,8 @@ rclone copy "$REMOTENAME:$REMOTE_FOLDER" "${HOT1}temp"
 # chronologize these
 echo "< $(date +"%D %T") >--------------------------->chronologizing..."
 cd chronologizer/src
-python3 sortphotos.py -s -r --sort %Y%m "${HOT1}temp" "$HOT1$HOT_CLOUDSTREAM_NAME"
+# add rename here
+python3 sortphotos.py -s -r --rename %Y_%m%d_%H%M --sort %Y%m "${HOT1}temp" "$HOT1$HOT_CLOUDSTREAM_NAME"
 cd ../../
 rm -rf "${HOT1}temp"
 

@@ -313,6 +313,9 @@ def sortPhotos(src_dir, dest_dir, sort_format, rename_format, recursive=False,
     if test:
         test_file_dict = {}
 
+    # get current time
+    currTS=datetime.now().strftime("%Y%m%d%H%M")
+
     # parse output extracting oldest relevant date
     for idx, data in enumerate(metadata):
 
@@ -372,7 +375,7 @@ def sortPhotos(src_dir, dest_dir, sort_format, rename_format, recursive=False,
 
         if rename_format is not None and date is not None:
             _, ext = os.path.splitext(filename)
-            filename = date.strftime(rename_format) + ext.lower()
+            filename = date.strftime(rename_format) + '_' + currTS + ext.lower()
 
         # setup destination file
         dest_file = os.path.join(dest_file, filename)
