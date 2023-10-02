@@ -9,7 +9,4 @@
  - shutdown behavior
 
  High Priority
- - make a non-backup setup script
- - change home gallery conf to stop watching sources
  - create instructions for adding cron jobs ( example cron job script )
- - add support for distinct file names ( sortphotos --rename %Y_%m%d_%H%M, and then append time till that time in nanoseconds to file, move out of cloudstream) (add this in backinUp/backup script)

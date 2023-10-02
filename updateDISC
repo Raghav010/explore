@@ -18,10 +18,6 @@ rm -rf "${DISC}${HG_PHOTOS_NAME}Pictures/"
 rm -rf "${DISC}${HG_PHOTOS_NAME}storage/"
 
 
-# restarting homegallery
-echo "< $(date +"%D %T") >--------------------------->Restarting home gallery, downtime now"
-sudo docker compose restart
-
 
 
 # run mediaFlow from HOT2 to disc
@@ -29,6 +25,10 @@ echo "< $(date +"%D %T") >--------------------------->running mediaflow"
 a=$(du -s "$HOT2$HOT_PHOTOS_NAME" --block-size=1G | awk '{print $1}')
 ./mediaFlow/mediaFlow "$DISC_PHOTOS_SIZE_ALLOC" "$a" "$HOT2$HOT_PHOTOS_NAME" "$DISC$DISC_PHOTOS_NAME"
 
+
+# restarting homegallery
+echo "< $(date +"%D %T") >--------------------------->Restarting home gallery, downtime now"
+sudo docker compose restart
 
 
 # update homegallery

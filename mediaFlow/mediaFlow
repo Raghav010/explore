@@ -31,13 +31,17 @@ function discPhotos()
     do
         if [ -d "$i" ] # checking if its a directory
         then
+            if [[ "$i" == "sampleDir" ]]
+            then
+                continue
+            fi
             echo "$i is a directory"
             cd "$i"
             discPhotos "$1"
             cd ..
         else # its a file
             explore=$(( $RANDOM % $samplingRate ))
-            if [[ "$explore" -eq 1 && "$i" != "mediaFlow" && "$i" != "sampleDir" ]] # sampling based on probability of selecting 1
+            if [[ "$explore" -eq 1 && "$i" != "mediaFlow" ]] # sampling based on probability of selecting 1
             then
                 if [[ "$i" =~ (.heic|.HEIC|.jpg|.JPG|.jpeg|.JPEG|.mp4|.MP4|.png|.PNG|.hevc|.HEVC|.mov|.MOV)$ ]]
                 then
