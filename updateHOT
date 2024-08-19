@@ -60,7 +60,7 @@ echo "< $(date +"%D %T") >--------------------------->conducting discovery drive
 freeDISC=$(df --block-size=1G "${DISC}" --output=avail | tail -1 | awk '{print $1}')
 if [[ "$freeDISC" -le "$BUFFER_DISC" ]]
 then
-    cat .env | grep -v "DISC_STOP" > .env
+    grep -v "DISC_STOP" .env > .env.tmp && mv .env.tmp .env
     echo "DISC_STOP=1" >> .env
 fi
 

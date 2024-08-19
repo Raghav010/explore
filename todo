@@ -6,7 +6,8 @@
  Priority 
  - mounting and unmounting of drives
  - if error occurs notify
- - shutdown behavior
+ - shutdown behavior in updateDISC
 
  High Priority
+ - reset DISC_STOP to 0 in updateDISC
  - create instructions for adding cron jobs ( example cron job script )

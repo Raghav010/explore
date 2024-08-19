@@ -116,7 +116,7 @@ def get_oldest_timestamp(data, additional_groups_to_ignore, additional_tags_to_i
     """data as dictionary from json.  Should contain only time stamps except SourceFile"""
 
     # save only the oldest date
-    date_available = False
+    # date_available = False
     oldest_date = datetime.now()
     oldest_keys = []
 
@@ -152,15 +152,15 @@ def get_oldest_timestamp(data, additional_groups_to_ignore, additional_tags_to_i
                 exifdate = None
 
             if exifdate and exifdate < oldest_date:
-                date_available = True
+                # date_available = True
                 oldest_date = exifdate
                 oldest_keys = [key]
 
             elif exifdate and exifdate == oldest_date:
                 oldest_keys.append(key)
 
-    if not date_available:
-        oldest_date = None
+    # if not date_available:
+    #     oldest_date = None
 
     if print_all_tags:
         print()
