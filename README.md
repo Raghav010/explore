@@ -31,6 +31,7 @@ The system is fully configurable through the `.env` file.
     - Ensure `python`, `perl`, and `bash` are installed and supported.
     - Install `ntfs-3g` and `fuse` packages.
     - Set up `rclone` with a Dropbox account globally, preferably using the root account.
+    - Set up docker and docker compose
 2. **Environment Configuration**:
     - Connect the necessary drives.
     - Fill in drive paths in the `.env` file.
